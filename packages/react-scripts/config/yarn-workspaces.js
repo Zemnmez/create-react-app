@@ -6,7 +6,6 @@ const findUp = require('find-up');
 const glob = require('glob');
 
 const loadPackageJson = packagePath => {
-<<<<<<< HEAD
   try {
     const packageObj = fse.readJsonSync(packagePath);
     return packageObj;
@@ -165,9 +164,14 @@ const getDeps = pkg => {
   }
 
   return dependencies;
-=======
 	const packageObj = fse.readJsonSync(packagePath);
 	return packageObj;
+	try {
+		const packageObj = fse.readJsonSync(packagePath);
+		return packageObj;
+	} catch (err) {
+		throw err;
+	}
 };
 
 const getWorkspacesRootConfig = dir => {
@@ -179,6 +183,7 @@ const getWorkspacesRootConfig = dir => {
 
 	const packageObj = loadPackageJson(packageJsonUp);
 
+<<<<<<< HEAD
 	if (
 		packageObj.workspaces &&
 		(
@@ -186,6 +191,9 @@ const getWorkspacesRootConfig = dir => {
 		Reflect.has(packageObj.workspaces, 'packages')
 		)
 	) {
+=======
+	if (Reflect.has(packageObj, 'workspaces')) {
+>>>>>>> CRA 3
 		const workspacesRootConfig = {
 			root: path.dirname(packageJsonUp),
 			workspaces: packageObj.workspaces
@@ -257,9 +265,13 @@ const loadAppSettings = appPackageJson => {
 	const dependencies = getDeep(appPackageObj, ['dependencies']);
 	const devDependencies = getDeep(appPackageObj, ['devDependencies']);
 
+<<<<<<< HEAD
 	if (!dependencies && !devDependencies) {
 		return result;
 	}
+=======
+	if (!dependencies && !devDependencies) return result;
+>>>>>>> CRA 3
 
 	if (dependencies) {
 		result.dependencies = Object.assign(result.dependencies, dependencies);
@@ -325,13 +337,11 @@ const getDeps = pkg => {
 	}
 
 	return dependencies;
->>>>>>> Update react-scripts package name.
 };
 
 const depsTable = {};
 
 const buildDepsTable = srcPaths => {
-<<<<<<< HEAD
   srcPaths.forEach(path => {
     const pkg = getPkg(path);
     const name = pkg.name;
@@ -434,7 +444,19 @@ const init = paths => {
 
 module.exports = {
   init,
-=======
+}
+const filterDeps = deps =>
+	Reflect.ownKeys(deps).filter(dep => Reflect.has(depsTable, dep));
+
+const filterDepsTable = () => {
+	Reflect.ownKeys(depsTable).forEach(depName => {
+		const depsList = depsTable[depName].deps;
+		const workspacesOnlyDeps = filterDeps(depsList);
+		depsTable[depName].deps = workspacesOnlyDeps;
+	});
+};
+
+const buildDepsTable = srcPaths => {
 	srcPaths.forEach(path => {
 		const pkg = getPkg(path);
 		const name = pkg.name;
@@ -519,6 +541,7 @@ const init = paths => {
 		appSettings.dependencies
 	))];
 
+
 	console.log(
 		`Found ${babelSrcPaths.length} path(s) with "${
 			config.packageEntry
@@ -536,5 +559,4 @@ const init = paths => {
 
 module.exports = {
 	init
->>>>>>> Update react-scripts package name.
 };

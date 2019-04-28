@@ -74,22 +74,13 @@ module.exports = function(webpackEnv) {
     'module',
     'main',
   ];
-<<<<<<< HEAD
 
-=======
   
->>>>>>> Update react-scripts package name.
+  const workspacesMainFields = [workspacesConfig.packageEntry, 'main'];
   const mainFields =
     isEnvDevelopment && workspacesConfig.development
       ? workspacesMainFields
       : isEnvProduction && workspacesConfig.production
-<<<<<<< HEAD
-      ? workspacesMainFields
-      : undefined;
-=======
-        ? workspacesMainFields
-        : undefined;
->>>>>>> Update react-scripts package name.
 
   const includePaths =
     isEnvDevelopment && workspacesConfig.development
@@ -102,6 +93,17 @@ module.exports = function(webpackEnv) {
   // passed into alias object. Uses a flag if passed into the build command
   const isEnvProductionProfile =
     isEnvProduction && process.argv.includes('--profile');
+
+
+  // Webpack uses `publicPath` to determine where the app is being served from.
+  // It requires a trailing slash, or the file assets will get an incorrect path.
+  // In development, we always serve from the root. This makes config easier.
+  const publicPath = isEnvProduction
+    ? paths.servedPath
+    : isEnvDevelopment && '/';
+  // Some apps do not use client-side routing with pushState.
+  // For these, "homepage" can be set to "." to enable relative asset paths.
+  const shouldUseRelativeAssetPaths = publicPath === './';
 
   // We will provide `paths.publicUrlOrPath` to our app
   // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
@@ -407,7 +409,11 @@ module.exports = function(webpackEnv) {
               loader: require.resolve('eslint-loader'),
             },
           ],
-          include: includePaths,
+          include: isEnvDevelopment && workspacesConfig.development
+          ? [paths.appSrc, workspacesConfig.paths]
+          : isEnvProduction && workspacesConfig.production
+            ? [paths.appSrc, workspacesConfig.paths]
+            : paths.appSrc,
         },
         {
           // "oneOf" will traverse all following loaders until one will
@@ -429,7 +435,12 @@ module.exports = function(webpackEnv) {
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
-              include: includePaths,
+              include:
+              isEnvDevelopment && workspacesConfig.development
+                ? [paths.appSrc, workspacesConfig.paths]
+                : isEnvProduction && workspacesConfig.production
+                  ? [paths.appSrc, workspacesConfig.paths]
+                  : paths.appSrc,
               loader: require.resolve('babel-loader'),
               options: {
                 customize: require.resolve(
