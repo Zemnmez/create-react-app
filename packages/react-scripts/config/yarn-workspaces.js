@@ -183,17 +183,7 @@ const getWorkspacesRootConfig = dir => {
 
 	const packageObj = loadPackageJson(packageJsonUp);
 
-<<<<<<< HEAD
-	if (
-		packageObj.workspaces &&
-		(
-		Array.isArray(packageObj.workspaces) ||
-		Reflect.has(packageObj.workspaces, 'packages')
-		)
-	) {
-=======
 	if (Reflect.has(packageObj, 'workspaces')) {
->>>>>>> CRA 3
 		const workspacesRootConfig = {
 			root: path.dirname(packageJsonUp),
 			workspaces: packageObj.workspaces
@@ -265,13 +255,7 @@ const loadAppSettings = appPackageJson => {
 	const dependencies = getDeep(appPackageObj, ['dependencies']);
 	const devDependencies = getDeep(appPackageObj, ['devDependencies']);
 
-<<<<<<< HEAD
-	if (!dependencies && !devDependencies) {
-		return result;
-	}
-=======
 	if (!dependencies && !devDependencies) return result;
->>>>>>> CRA 3
 
 	if (dependencies) {
 		result.dependencies = Object.assign(result.dependencies, dependencies);
@@ -540,7 +524,6 @@ const init = paths => {
 		babelSrcPaths,
 		appSettings.dependencies
 	))];
-
 
 	console.log(
 		`Found ${babelSrcPaths.length} path(s) with "${
