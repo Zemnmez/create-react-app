@@ -92,6 +92,13 @@ module.exports = function(webpackEnv) {
     isEnvProduction && process.argv.includes('--profile');
 
 
+  const includePaths =
+    isEnvDevelopment && workspacesConfig.development
+      ? [paths.appSrc, ...workspacesConfig.paths]
+      : isEnvProduction && workspacesConfig.production
+      ? [paths.appSrc, ...workspacesConfig.paths]
+      : paths.appSrc;
+
   // Webpack uses `publicPath` to determine where the app is being served from.
   // It requires a trailing slash, or the file assets will get an incorrect path.
   // In development, we always serve from the root. This makes config easier.
@@ -406,11 +413,7 @@ module.exports = function(webpackEnv) {
               loader: require.resolve('eslint-loader'),
             },
           ],
-          include: isEnvDevelopment && workspacesConfig.development
-          ? [paths.appSrc, workspacesConfig.paths]
-          : isEnvProduction && workspacesConfig.production
-            ? [paths.appSrc, workspacesConfig.paths]
-            : paths.appSrc,
+          include: includePaths,
         },
         {
           // "oneOf" will traverse all following loaders until one will
@@ -432,12 +435,7 @@ module.exports = function(webpackEnv) {
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
-              include:
-              isEnvDevelopment && workspacesConfig.development
-                ? [paths.appSrc, workspacesConfig.paths]
-                : isEnvProduction && workspacesConfig.production
-                  ? [paths.appSrc, workspacesConfig.paths]
-                  : paths.appSrc,
+              include: includePaths,
               loader: require.resolve('babel-loader'),
               options: {
                 customize: require.resolve(
