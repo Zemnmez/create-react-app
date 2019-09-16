@@ -74,8 +74,8 @@ module.exports = function(webpackEnv) {
     isEnvDevelopment && workspacesConfig.development
       ? workspacesMainFields
       : isEnvProduction && workspacesConfig.production
-        ? workspacesMainFields
-        : undefined;
+      ? workspacesMainFields
+      : undefined;
 
   // Webpack uses `publicPath` to determine where the app is being served from.
   // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -379,11 +379,12 @@ module.exports = function(webpackEnv) {
               loader: require.resolve('eslint-loader'),
             },
           ],
-          include: isEnvDevelopment && workspacesConfig.development
-          ? [paths.appSrc, workspacesConfig.paths]
-          : isEnvProduction && workspacesConfig.production
-            ? [paths.appSrc, workspacesConfig.paths]
-            : paths.appSrc,
+          include:
+            isEnvDevelopment && workspacesConfig.development
+              ? [paths.appSrc, workspacesConfig.paths]
+              : isEnvProduction && workspacesConfig.production
+              ? [paths.appSrc, workspacesConfig.paths]
+              : paths.appSrc,
         },
         {
           // "oneOf" will traverse all following loaders until one will
@@ -406,9 +407,9 @@ module.exports = function(webpackEnv) {
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
               include:
-              isEnvDevelopment && workspacesConfig.development
-                ? [paths.appSrc, workspacesConfig.paths]
-                : isEnvProduction && workspacesConfig.production
+                isEnvDevelopment && workspacesConfig.development
+                  ? [paths.appSrc, workspacesConfig.paths]
+                  : isEnvProduction && workspacesConfig.production
                   ? [paths.appSrc, workspacesConfig.paths]
                   : paths.appSrc,
               loader: require.resolve('babel-loader'),
