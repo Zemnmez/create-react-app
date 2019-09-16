@@ -30,10 +30,10 @@ root_path=$PWD
 #   yarn compile:lockfile
 # fi
 
-if [ -n "$(git status --porcelain)" ]; then
-  echo "Your git status is not clean. Aborting.";
-  exit 1;
-fi
+# if [ -n "$(git status --porcelain)" ]; then
+#   echo "Your git status is not clean. Aborting.";
+#   exit 1;
+# fi
 
 # Compile
 cd packages/react-error-overlay/
