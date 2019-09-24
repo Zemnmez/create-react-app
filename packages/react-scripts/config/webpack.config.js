@@ -74,8 +74,8 @@ module.exports = function(webpackEnv) {
     isEnvDevelopment && workspacesConfig.development
       ? workspacesMainFields
       : isEnvProduction && workspacesConfig.production
-        ? workspacesMainFields
-        : undefined;
+      ? workspacesMainFields
+      : undefined;
 
   // Webpack uses `publicPath` to determine where the app is being served from.
   // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -354,6 +354,7 @@ module.exports = function(webpackEnv) {
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
                 // @remove-on-eject-begin
+                ignore: process.env.EXTEND_ESLINT === 'true',
                 baseConfig: (() => {
                   const eslintCli = new eslint.CLIEngine();
                   let eslintConfig;
@@ -372,18 +373,18 @@ module.exports = function(webpackEnv) {
                     };
                   }
                 })(),
-                ignore: false,
                 useEslintrc: false,
                 // @remove-on-eject-end
               },
               loader: require.resolve('eslint-loader'),
             },
           ],
-          include: isEnvDevelopment && workspacesConfig.development
-          ? [paths.appSrc, workspacesConfig.paths]
-          : isEnvProduction && workspacesConfig.production
-            ? [paths.appSrc, workspacesConfig.paths]
-            : paths.appSrc,
+          include:
+            isEnvDevelopment && workspacesConfig.development
+              ? [paths.appSrc, workspacesConfig.paths]
+              : isEnvProduction && workspacesConfig.production
+              ? [paths.appSrc, workspacesConfig.paths]
+              : paths.appSrc,
         },
         {
           // "oneOf" will traverse all following loaders until one will
@@ -406,9 +407,9 @@ module.exports = function(webpackEnv) {
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
               include:
-              isEnvDevelopment && workspacesConfig.development
-                ? [paths.appSrc, workspacesConfig.paths]
-                : isEnvProduction && workspacesConfig.production
+                isEnvDevelopment && workspacesConfig.development
+                  ? [paths.appSrc, workspacesConfig.paths]
+                  : isEnvProduction && workspacesConfig.production
                   ? [paths.appSrc, workspacesConfig.paths]
                   : paths.appSrc,
               loader: require.resolve('babel-loader'),
@@ -619,7 +620,7 @@ module.exports = function(webpackEnv) {
         new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       // Makes some environment variables available in index.html.
       // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
-      // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+      // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">
       // In production, it will be an empty string unless you specify "homepage"
       // in `package.json`, in which case it will be the pathname of that URL.
       // In development, this will be an empty string.
