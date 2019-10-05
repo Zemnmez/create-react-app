@@ -1,6 +1,5 @@
 {
   "name": "create-react-app-with-yarn-workspace",
-  "private": true,
   "workspaces": [
     "packages/*"
   ],
@@ -53,5 +52,5 @@
       "git rm --cached"
     ]
   },
-  "version": "0.0.5"
+  "version": "0.0.7"
 }
