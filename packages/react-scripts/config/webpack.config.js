@@ -74,13 +74,22 @@ module.exports = function(webpackEnv) {
     'module',
     'main',
   ];
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> Update react-scripts package name.
   const mainFields =
     isEnvDevelopment && workspacesConfig.development
       ? workspacesMainFields
       : isEnvProduction && workspacesConfig.production
+<<<<<<< HEAD
       ? workspacesMainFields
       : undefined;
+=======
+        ? workspacesMainFields
+        : undefined;
+>>>>>>> Update react-scripts package name.
 
   const includePaths =
     isEnvDevelopment && workspacesConfig.development
