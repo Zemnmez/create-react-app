@@ -2,6 +2,7 @@
   "name": "@react-workspaces/react-scripts",
   "version": "3.3.0-alpha-08",
   "description": "React + Yarn Workspaces Configuration and scripts for Create React App.",
+  "private": true,
 
   "repository": {
     "type": "git",
@@ -108,5 +109,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "workspaces": ["packages/*"]
 }
