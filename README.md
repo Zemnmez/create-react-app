@@ -1,6 +1,6 @@
 # :warning: WARNING!
 
-This is a custom scripts-version of React-Scripts that provides Monorepo support.
+This is a custom scripts-version of React-Scripts that provides Monorepo support. And MDX support!
 
 See [React Workspaces Playground](https://github.com/react-workspaces/react-workspaces-playground) for a working demo.
 
