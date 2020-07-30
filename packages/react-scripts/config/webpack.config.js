@@ -73,6 +73,11 @@ module.exports = function(webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
+  // Variable used for enabling profiling in Production
+  // passed into alias object. Uses a flag if passed into the build command
+  const isEnvProductionProfile =
+    isEnvProduction && process.argv.includes('--profile');
+
   const workspacesMainFields = [
     workspacesConfig.packageEntry,
     'browser',
@@ -83,6 +88,8 @@ module.exports = function(webpackEnv) {
     isEnvDevelopment && workspacesConfig.development
       ? workspacesMainFields
       : isEnvProduction && workspacesConfig.production
+      ? workspacesMainFields
+      : undefined;
 
   const includePaths =
     isEnvDevelopment && workspacesConfig.development
@@ -90,29 +97,6 @@ module.exports = function(webpackEnv) {
       : isEnvProduction && workspacesConfig.production
       ? [paths.appSrc, ...workspacesConfig.paths]
       : paths.appSrc;
-
-  // Variable used for enabling profiling in Production
-  // passed into alias object. Uses a flag if passed into the build command
-  const isEnvProductionProfile =
-    isEnvProduction && process.argv.includes('--profile');
-
-
-  const includePaths =
-    isEnvDevelopment && workspacesConfig.development
-      ? [paths.appSrc, ...workspacesConfig.paths]
-      : isEnvProduction && workspacesConfig.production
-      ? [paths.appSrc, ...workspacesConfig.paths]
-      : paths.appSrc;
-
-  // Webpack uses `publicPath` to determine where the app is being served from.
-  // It requires a trailing slash, or the file assets will get an incorrect path.
-  // In development, we always serve from the root. This makes config easier.
-  const publicPath = isEnvProduction
-    ? paths.servedPath
-    : isEnvDevelopment && '/';
-  // Some apps do not use client-side routing with pushState.
-  // For these, "homepage" can be set to "." to enable relative asset paths.
-  const shouldUseRelativeAssetPaths = publicPath === './';
 
   // We will provide `paths.publicUrlOrPath` to our app
   // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
@@ -404,12 +388,6 @@ module.exports = function(webpackEnv) {
             },
           ],
           include: includePaths,
-          // Don't lint typescript files outside the main package because it has problems with some syntax rules, e.g. abstract
-          exclude: useTypeScript
-            ? file =>
-                /\.tsx?/.test(path.extname(file)) &&
-                !file.startsWith(paths.appSrc)
-            : undefined,
         },
         {
           // "oneOf" will traverse all following loaders until one will

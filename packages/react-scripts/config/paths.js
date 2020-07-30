@@ -10,7 +10,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const url = require('url');
 const findUp = require('find-up');
 const getPublicUrlOrPath = require('react-dev-utils/getPublicUrlOrPath');
 
